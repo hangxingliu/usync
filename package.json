@@ -1,0 +1,30 @@
+{
+  "name": "usync",
+  "version": "1.0.0",
+  "description": "A USB Sync Nodejs script",
+  "main": "bin/usync.js",
+  "bin": {
+    "usync": "usync.js"
+  },
+  "scripts": {
+    "test": "mocha",
+    "start": "node bin/usync.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hangxingliu/usync.git"
+  },
+  "keywords": [
+    "sync",
+    "nodejs"
+  ],
+  "author": "LiuYue",
+  "license": "GPL-2.0",
+  "bugs": {
+    "url": "https://github.com/hangxingliu/usync/issues"
+  },
+  "homepage": "https://github.com/hangxingliu/usync#readme",
+  "dependencies": {
+    "fs-extra": "^0.30.0"
+  }
+}
