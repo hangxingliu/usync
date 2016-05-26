@@ -1,0 +1,16 @@
+{
+	"baseDir": "Profiles",
+	"profiles": {
+		"vscode1": {
+			"path": ".vscode",
+			"exportPath": ""
+		},
+		"vscode2": {
+			"path": "vscode",
+			"exportPath": ""
+		}
+	},
+	"profileSet": {
+		"vscode": ["vscode1", "vscode2"]
+	}
+}

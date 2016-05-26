@@ -7,7 +7,7 @@
     "usync": "usync.js"
   },
   "scripts": {
-    "test": "mocha --reporter=nyan",
+    "test": "mocha --reporter=nyan --timeout=10000",
     "start": "node bin/usync.js"
   },
   "repository": {

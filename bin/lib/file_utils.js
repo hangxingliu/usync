@@ -45,7 +45,7 @@ module.exports = {
 	 * @param  {object} baseInfo
 	 * @return {object}
 	 */
-	'genFilesInfo': function (basePath, files, baseInfo) {
+	'genFilesInfo': function (basePath, files, baseInfo) {	
 		if (!baseInfo) baseInfo = {};
 		for (var i in files) {
 			var fname = files[i];
@@ -58,5 +58,9 @@ module.exports = {
 			];
 		}
 		return baseInfo;
+
+
+
+
 	}
 };
