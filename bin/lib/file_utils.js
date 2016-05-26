@@ -8,8 +8,8 @@ module.exports = {
 	/**
 	 * 递归获得文件名,并可以加入glob的忽略数组筛选
 	 * @param  {string} rootPath 根目录(可以是相对路径)
-	 * @param  {string|undefine} basePath 基准(用于相对化路径)路径
-	 * @param  {string[]|undefined} ignores glob忽略数组
+	 * @param  {string} basePath 基准(用于相对化路径)路径
+	 * @param  {string[]} ignores glob忽略数组
 	 * @return {string[]}
 	 */
 	'listTreeRelative': function(rootPath, basePath, ignores) {
@@ -58,9 +58,31 @@ module.exports = {
 			];
 		}
 		return baseInfo;
-
-
-
-
+	},
+	
+	/**
+	 * 更新部分文件信息
+	 * @param  {object} updateInfos 需要更新的部分文件信息对象
+	 * @param  {object} oldInfos 原始文件信息对象
+	 * @return {object} 新的文件信息对象
+	 */
+	'updateFilesInfo': function (updateInfos, oldInfos) {
+		var newInfos = JSON.parse(JSON.stringify(oldInfos));
+		for (var i in updateInfos) {
+			newInfos[i] = updateInfos[i];
+		}
+		return newInfos;
+		
+	},
+	
+	/**
+	 * 读取文件信息
+	 * @param  {any} jsonFile
+	 * @param  {any} infoFolder
+	 */
+	'loadFilesInfo': function (jsonFile, infoFolder) {
+		//TODO
 	}
+
+	
 };

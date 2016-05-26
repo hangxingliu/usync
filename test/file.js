@@ -40,5 +40,18 @@ describe('文件信息获取相关测试', function () {
 		checkObj[0].should.be.eql(require('md5')('123456'));
 		checkObj[1].should.be.above(1464258423000);
 		checkObj[2].should.be.eql(6);
+	}); 
+	it('通过文件相对路径数组获得文件信息对象 覆盖原有信息版', function () {
+		var updateInfo = {
+			'env/test.txt': [0, 0, 0],
+			'env/test2.txt': [0, 0, 0]
+		};
+		var files = utils.listTreeRelative('./test/env', './test', ['env/sub/*']);
+		var info = utils.genFilesInfo('./test', files);
+		var info = utils.updateFilesInfo(updateInfo, info);
+		var checkObj = info['env/test.txt'];
+		checkObj[0].should.be.eql(0);
+		checkObj[1].should.be.eql(0);
+		checkObj[2].should.be.eql(0);
 	});
 });

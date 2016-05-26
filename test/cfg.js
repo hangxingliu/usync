@@ -24,4 +24,20 @@ describe('配置文件相关测试', function() {
 		cfg.getProfiles('all').should.be.length(2);
 		cfg.getProfiles('vscode1').should.be.length(1);
 	});
+
+	it('判断配置是否有效', function () {
+		cfg.isProfileLegal('vscode1', 0).should.be.ok;
+		cfg.isProfileLegal('vscode2', 0).should.be.not.ok;
+		cfg.isProfileLegal('vscode3', 0).should.be.not.ok;
+	});
+
+	it('获得配置的详细内容', function () {
+		cfg.getProfileContent('vscode1', 'save', {}).should.has.key('path', 'exportPath', 'ignore', 'c', 'd')
+			.and.satisfy(function (data) {
+				for (var i in data)
+					if (!data[i])
+						return false;
+				return true;
+			});
+	});
 });

@@ -7,7 +7,7 @@ var fs = require('fs');
  */
 function yn(output, defaultValue) {
 	var out = defaultValue ? '(Y/n):' : '(y/N):';
-	output && fs.writeSync(process.stdout.fd, (typeof output == 'string') ? (output + ' ' + out) : out);
+	output && console.log( ((typeof output == 'string') ? (output + ' ' + out) : out));
 	process.stdin.pause();
 	var res = fs.readSync(process.stdin.fd, 3, 0, "utf8")[0].trim().toLowerCase();
 	process.stdin.resume();

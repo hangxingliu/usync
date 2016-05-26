@@ -1,15 +1,16 @@
+//var fs = require('fs');
 var fs2 = require('fs-extra');
 var path = require('path');
-var yn = require('yesno_utils.js');
+var yn = require('./yesno_utils.js');
 
 var indexs = { m: 0, t: 1, s: 2 };
-var words = {
-	m: '文件md5不同,是否需要覆盖',
-	t: '文件相比更新,是否需要覆盖',
-	s: '文件尺寸不同,是否需要覆盖'
-}
+var words = [
+	'文件md5不同,是否需要覆盖',
+	'文件相比更新,是否需要覆盖',
+	'文件尺寸不同,是否需要覆盖'
+];
 var copy =  {
-	"shouldCopy": function (fromInfo, toInfo, coverMethod, coverQuest) {
+	"shouldCopy": function (fname, fromInfo, toInfo, coverMethod, coverQuest) {
 		if (!toInfo)
 			return true;
 		var index = indexs[coverMethod];
@@ -24,7 +25,12 @@ var copy =  {
 			default://n
 				return false;	
 		}
-		return yn(words[index], true);
+		return coverQuest ? yn(words[index] + '(' + fname + ')', true) : true;
+	},
+
+	"onError": function (error) {
+		console.error('同步出错!');
+		console.error(error);
 	},
 	
 	/**
@@ -37,15 +43,14 @@ var copy =  {
 	"copy": function (fromPath, toPath, fromFileInfos, toFileInfos, coverAttr) {
 		var coverAttr = coverAttr.toLowerCase();
 		var coverMethod = coverAttr[0];
-		var coverQuest = !coverAttr[1];
+		var coverQuest = coverAttr[1] == 'q';
 		var modify = {};
 		for (var filename in fromFileInfos) {
-			if (copy.shouldCopy(fromFileInfos[filename], toFileInfos[filename], coverMethod, coverQuest)) {
+			if (copy.shouldCopy(filename, fromFileInfos[filename], toFileInfos[filename], coverMethod, coverQuest)) {
 				modify[filename] = fromFileInfos[filename];
-				fs2.copy(path.join(fromPath, filename), path.join(toPath, filename), function (err) {
-					console.error("同步出错!详细信息:");
-					console.error(err);
-				});
+				var distTaret = path.join(toPath, filename);
+				// fs2.mkdirsSync(path.dirname(distTaret));
+				fs2.copySync(path.join(fromPath,filename), distTaret);
 			}	
 		}
 		return modify;

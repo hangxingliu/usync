@@ -3,7 +3,7 @@
 	"profiles": {
 		"vscode1": {
 			"path": ".vscode",
-			"exportPath": ""
+			"exportPath": "%USERPROFILE%\\.vscode"
 		},
 		"vscode2": {
 			"path": "vscode",
