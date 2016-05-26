@@ -1,0 +1,1 @@
+document.write('Hello Indian friend! Do you like MI4I');
