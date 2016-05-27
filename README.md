@@ -72,7 +72,7 @@ clear the traces in computer
 ### Action: cleanusb, clearusb (TODO)
 clear the files in usb disk
 
-## How to config `usync.config.json`
+## How to config `usync.config.json`.
 ``` javascript
 {
 	"baseDir": ".", //Optional, The usb disk files base folder
@@ -87,6 +87,11 @@ clear the files in usb disk
 			},
 			"ignore": ["*.js"]//Ignore file expression array(glob)
 		}
+	},
+	"profileSet": {
+		"PROFILE_SET_NAME": [
+			"profileName1", "profileName2"//...
+		 ]//...
 	}
 }
 
