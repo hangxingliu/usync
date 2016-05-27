@@ -54,4 +54,31 @@ describe('文件信息获取相关测试', function () {
 		checkObj[1].should.be.eql(0);
 		checkObj[2].should.be.eql(0);
 	});
+
+	it('比较两个文件信息数组', function () {
+		var info1 = ['xxxx', 10086, 5];
+		var info2 = ['xxxx', 10086, 5];
+		var info3 = ['xxxx', 10087, 5];
+		utils.compareFileInfo(info1, info2).should.be.true;
+		utils.compareFileInfo(info1, info3, true).should.be.true;
+		[utils.compareFileInfo(info1, info3)].should.be.eql([1]);
+	});
+
+
+	it('比较两组文件信息对象', function () {
+		var oldInfo = {
+			'hadDelete': [0, 1, 2],
+			'hadModify': [0, 1, 2],
+			'normal':	 [0, 1, 2],	
+		};
+		var newInfo = {
+			'hadAdd':	 [0, 1, 2],
+			'hadModify': [1, 1, 2],
+			'normal':	 [0, 1, 2],	
+		};
+		var diffInfo = utils.diffFilesInfo(newInfo, oldInfo);
+		diffInfo.should.has.all.keys('hadAdd', 'hadModify', 'hadDelete');
+		diffInfo['hadDelete'].should.be.empty;
+		diffInfo['hadModify'][0].should.be.eql(1);
+	});
 });

@@ -9,11 +9,15 @@ var path = require('path');
 var Cfg = function(cfgPath) {
 	var self = this;
 	
-	var _cfgObj = fs2.readJSONSync(cfgPath || 'config.json');
+	var _cfgObj = fs2.readJSONSync(this.cfgFilePath = (cfgPath || 'usync.config.json') );
 
 	//让配置文件的一些可选值保证有值
 	if (!_cfgObj.baseDir)
 		_cfgObj.baseDir = './';
+	if (!_cfgObj.indexsDir) //索引文件夹位置及创建
+		_cfgObj.indexsDir = path.join(_cfgObj.baseDir, 'indexs');
+	//创建文件夹
+	fs2.mkdirsSync(_cfgObj.indexsDir);
 	if (!_cfgObj.profileSet)
 		_cfgObj.profileSet = {};	
 
@@ -32,7 +36,8 @@ var Cfg = function(cfgPath) {
 		if (!_obj.defaultOptions.save) _obj.defaultOptions.save = {};
 		var result = {
 			path: path.resolve(path.join(_cfgObj.baseDir, _obj.path) ),
-			exportPath: path.resolve(self.converPathHasEnvVar(_obj.exportPath) ),
+			exportPath: path.resolve(self.converPathHasEnvVar(_obj.exportPath)),
+			indexFile: path.resolve(path.join(_cfgObj.indexsDir, name + '.json') ),
 			ignore: _obj.ignore || []
 		};
 		if (action == 'load') {

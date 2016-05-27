@@ -34,10 +34,10 @@ var copy =  {
 	},
 	
 	/**
-	 * @param  {any} fromPath
-	 * @param  {any} toPath
-	 * @param  {any} fromFileInfos
-	 * @param  {any} toFileInfos
+	 * @param  {string} fromPath
+	 * @param  {string} toPath
+	 * @param  {object} fromFileInfos
+	 * @param  {object} toFileInfos
 	 * @param  {string} coverAttr 
 	 */
 	"copy": function (fromPath, toPath, fromFileInfos, toFileInfos, coverAttr) {

@@ -1,4 +1,11 @@
-module.exports = {
+var alias = {
+	'usb2cp':	'load',
+	'cp2usb':	'save',
+	'use': 		'load',
+	'index':	'build',
+};
+
+var thiz = {
 
 	/**
 	 * 获得属于usync的启动参数数组
@@ -11,6 +18,7 @@ module.exports = {
 				break;
 		return argv.slice(parseInt(i) + 1);
 	},
+
 	/**
 	 * 用usync的参数中解析成对象
 	 * @param  {string[]} argv usync参数数组
@@ -18,7 +26,7 @@ module.exports = {
 	 */
 	'analyzeArgs': function (argv) {
 		var result = {
-			action: argv[0],
+			action: alias[argv[0]] || argv[0],
 			profileName: argv[1]
 		};
 		//获得附加选项
@@ -30,3 +38,4 @@ module.exports = {
 		return result;
 	}
 };
+module.exports = thiz;

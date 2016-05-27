@@ -1,5 +1,6 @@
 {
 	"baseDir": "Profiles",
+	"indexsDir": "Profiles\\indexs",
 	"profiles": {
 		"vscode1": {
 			"path": ".vscode",
