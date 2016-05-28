@@ -147,7 +147,15 @@ var thiz = {
 				return parseInt(i);
 		}
 		return true;
-	}
+	},
 
+	/**
+	 * 删除一个文件/文件夹
+	 * @param  {string} path 文件/文件夹路径
+	 */
+	'removePath': function (path) {
+		atomFs.removeSync(path);
+	}
+	
 };
 module.exports = thiz;

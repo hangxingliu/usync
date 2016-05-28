@@ -32,22 +32,23 @@ describe('配置文件相关测试', function() {
 	});
 
 	it('获得配置的详细内容', function() {
-		cfg.getProfileContent('vscode1', 'save', {}).should.has.key('path', 'exportPath', 'indexFile', 'ignore', 'c', 'd')
+		cfg.getProfileContent('vscode1', 'save', { 'y': '' }).should.has.key(
+			'path', 'exportPath', 'indexFile', 'ignore', 'c', 'd', 'y')
 			.and.satisfy(function(data) {
 				for (var i in data)
-					if (!data[i])
+					if (data[i] === void 0)
 						return false;
 				return true;
 			});
 	});
 
 	it('获得配置的描述信息', function () {
-		Texts.getListCfg(cfg, {}).should.contain('Profiles').and.contain('config.json')
+		Texts.getListCfg(cfg).should.contain('Profiles').and.contain('config.json')
 			.and.contain('vscode1').and.contain('\n');
 	});
 	
 	it('获得配置的描述信息, 包含筛选配置名', function () {
-		var info = Texts.getListCfg(cfg, { profileName: 'vscode2' });
+		var info = Texts.getListCfg(cfg, 'vscode2');
 		info.should.has.contain('vscode2').and.has.not.contain('vscode1');
 	});
 });

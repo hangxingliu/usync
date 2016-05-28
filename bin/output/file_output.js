@@ -10,7 +10,7 @@ var thiz = {
 			del = [],
 			modi = [];
 		for (var i in diffInfos) {
-			if (!diffInfos[i])
+			if (!diffInfos[i][0])
 				del.push('\t' + i);
 			else if (!oldInfos[i])
 				add.push('\t' + i);

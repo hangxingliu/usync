@@ -5,9 +5,9 @@
 
 ## Coming soon
 1. Delete redundant files
-2. Clean
-3. Ignore files
-4. Archive files
+2. Ignore files
+3. Archive files
+4. Support i18n
 
 ## Version: 0.0.1 (experimental)
 
@@ -52,24 +52,25 @@ used to batch transfer files, folders, archives and clean traces between compute
 - `n`: none
 - `q`: quest me(Y/n)
 
-### Yes for confirm action ( -y ) (TODO)
+### Yes for confirm action ( -y )
 ```
-	-y
+	-y[!]
 ```
+- `!`: No for confirm action(Using for action you dont want to execute);
 
 ### Action: load, use, usb2pc
 copy files from usb disk to hraddisk(computer)
 
-### Action: save, pc2usb
+### Action: save, backup, pc2usb
 copy files to usb disk 
 
 ### Action: build, index
 rebuild(index) files info in usb disk
 
-### Action: clean, clear, leave (TODO)
+### Action: clean, clear, leave
 clear the traces in computer
 
-### Action: cleanusb, clearusb (TODO)
+### Action: cleanusb, clearusb
 clear the files in usb disk
 
 ## How to config `usync.config.json`.

@@ -1,8 +1,13 @@
 var alias = {
-	'usb2cp':	'load',
-	'cp2usb':	'save',
-	'use': 		'load',
-	'index':	'build',
+	'usb2cp': 'load',
+	'cp2usb': 'save',
+	'use': 'load',
+	'pc2usb': 'save',
+	'bacup': 'save',
+	'index': 'build',
+	'clear': 'clean',
+	'leave': 'clean',
+	'clearusb': 'cleanusb'
 };
 
 var thiz = {

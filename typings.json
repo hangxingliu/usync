@@ -2,6 +2,7 @@
   "globalDependencies": {
     "chai": "registry:dt/chai#3.4.0+20160317120654",
     "colors": "registry:dt/colors#0.6.0-1+20160501135139",
+    "fibers": "registry:dt/fibers#0.0.0+20160317120654",
     "fs-extra": "registry:dt/fs-extra#0.0.0+20160319124112",
     "i18n-node": "registry:dt/i18n-node#0.0.0+20160521152545",
     "minimatch": "registry:dt/minimatch#2.0.8+20160317120654",

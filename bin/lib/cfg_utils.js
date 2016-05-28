@@ -2,6 +2,16 @@ var fs = require('fs');
 var atomFs = require('fs-plus');
 var fs2 = require('fs-extra');
 var path = require('path');
+
+var globalDefaultOptions = {
+	load: {
+		c: 'a', d: 'a'
+	},
+	save: {
+		c: 'mq', d: 'q'
+	}
+};
+
 /**
  * 创建一个配置对象通过配置文件路径
  * @param  {string|undefined} cfgPath 默认当前目录下的config.json
@@ -40,13 +50,17 @@ var Cfg = function(cfgPath) {
 			indexFile: path.resolve(path.join(_cfgObj.indexsDir, name + '.json') ),
 			ignore: _obj.ignore || []
 		};
-		if (action == 'load') {
-			result.c = argsObj.c || _obj.defaultOptions.load.c || 'a';
-			result.d = argsObj.d || _obj.defaultOptions.load.d || 'a';
-		}else if (action == 'save') {
-			result.c = argsObj.c || _obj.defaultOptions.save.c || 'aq';
-			result.d = argsObj.d || _obj.defaultOptions.save.d || 'n';
-		}
+		var op = globalDefaultOptions[action];
+		//优先级最低: 全局默认选项
+		for (var key in op) 
+			result[key] = op[key];
+		//优先级提高一层: 配置文件指定默认选项
+		op = _obj.defaultOptions[action];
+		for (var key in op) 
+			result[key] = op[key];
+		//最高优先级,用户输入选项
+		for (var key in argsObj) 
+			result[key] = argsObj[key];
 		return result;
 	};
 	

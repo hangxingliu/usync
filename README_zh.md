@@ -5,9 +5,9 @@
 
 ## 即将来到的功能
 1. 清除多余的文件
-2. 清除痕迹及文件
-3. 忽略文件的列表
-4. 归档文件的支持
+2. 忽略文件的列表
+3. 归档文件的支持
+4. 脚本-i18n支持
 
 ## 版本: 0.0.1 (试验性质)
 
@@ -47,7 +47,7 @@
 - `n`: none
 - `q`: quest me(Y/n)
 
-### Yes for confirm action ( -y ) (TODO)
+### Yes for confirm action ( -y )
 ```
 	-y
 ```
@@ -61,10 +61,10 @@
 ### Action: build, index
 重建U盘内文件的缓存信息
 
-### Action: clean, clear, leave (TODO)
+### Action: clean, clear, leave
 清除留着电脑中的文件/痕迹
 
-### Action: cleanusb, clearusb (TODO)
+### Action: cleanusb, clearusb
 清除U盘中的文件
 
 ## 配置 `usync.config.json`.
