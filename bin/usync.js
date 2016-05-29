@@ -13,8 +13,46 @@ var legalAction = {
 	'cleanusb': 5,
 	'list': 100
 };
+//需要执行的配置的队列
+var profileHandlerList = [];
 
-function handlerAction(actionID, cfg, profileName, profile) {
+//获得传入usync的参数
+var params = args.analyzeArgs(args.getArgs(process.argv));
+//获得配置文件
+var cfg = Cfg(params.configFile);
+//操作
+var action = params.action;
+//操作ID
+var actionID = legalAction[action] || error('未知操作: ' + action + ' !', 1);
+
+if( actionID >= 100 ){
+	// list操作
+	handlerAction(params.profileName);
+} else {
+	//缺少配置名
+	params.profileName || error('请输入配置名!', 1);
+
+	//获取需要执行的配置名的队列
+	profileHandlerList = cfg.getProfiles(params.profileName);
+
+	//开始配置队列执行
+	handlerProfileList();
+}
+
+//--------------------------------------------------------------------------
+//-------------- Function -- Block -- Start --------------------------------
+//--------------------------------------------------------------------------
+
+
+/**
+ * 根据action信息,执行一个action
+ * @param  {number} actionID
+ * @param  {Object} cfg
+ * @param  {string} profileName
+ * @param  {Object} profile
+ * @return {number} 1: 已经通知调用下一次的handlerProfileList, 返回后无需调用,其他: 相反
+ */
+function handlerAction(profileName, profile) {
 	switch (actionID) {
 		case 100://查找列举配置(配置集)名的命令 list
 			return console.log(output('cfg').getListCfg(cfg, profileName));
@@ -29,12 +67,20 @@ function handlerAction(actionID, cfg, profileName, profile) {
 
 	switch (actionID) {
 		case 1: //load mode
+			if (profile.type != 'files')
+				return archive(profile.type).load(profile.subtype, profileName, profile, handlerProfileList, 1), 1;
+			
 			return console.log(copy.copy(profile.path, profile.exportPath, usbInfos, cpInfos, profile.c));
 		case 2: //save mode
+			if (profile.type != 'files')
+				return archive(profile.type).save(profile.subtype, profileName, profile, handlerProfileList, 1), 1;	
+			
 			var updateInfos = copy.copy(profile.exportPath, profile.path, cpInfos, usbInfos, profile.c);
 			console.log(updateInfos);
 			return usbInfos = file.saveFilesInfo(profile.indexFile, updateInfos, usbInfos);
 		case 3: //build
+			if (profile.type != 'files')
+				return console.log('归档形式的同步无需构建文件信息缓存1');	
 			var usbInfos2 = getUSBFileInfos(profile, 1);
 			//输出差异
 			console.log( output('file').getDiff( file.diffFilesInfo(usbInfos2, usbInfos), usbInfos ) );
@@ -43,41 +89,31 @@ function handlerAction(actionID, cfg, profileName, profile) {
 	}
 }
 
-function main() {
-	//获得传入usync的参数
-	var params = args.analyzeArgs(args.getArgs(process.argv));
-	//获得配置文件
-	var cfg = Cfg(void 0);
-	//操作
-	var action = params.action;
-	//操作ID
-	var actionID = legalAction[action] || errorExit('未知操作: ' + action + ' !');
+function handlerProfileList() {
+	var profileName = profileHandlerList.shift();
+
+	//配置列表全部完成
+	if (!profileName)
+		return console.log('-----------------------------\n\tUSync: 全部任务完成!') || process.exit(0);
+
+	//判断配置是否合规
+	if (!cfg.isProfileLegal(profileName))
+		return error('配置 ' + profileName + ' 不合规!'), handlerProfileList();
+
+	//获得配置内容
+	var profile = cfg.getProfileContent(profileName, action, params);
+
+	if (profile.y === '!')
+		return error('配置 ' + profileName + ' 不允许此操作(-y!选项)!'), handlerProfileList();
 	
-	// list操作
-	actionID >= 100 && (handlerAction(actionID, cfg, params.profileName), process.exit(0));
-	
-	//缺少配置名
-	params.profileName || errorExit('请输入配置名!');
-	
-	var profiles = cfg.getProfiles(params.profileName);
-	for (var pi in profiles) {
-		var profileName = profiles[pi];
+	//提示确认操作
+	if(profile.y === void 0)
+		if(console.log(output('action').getActionConfirm(actionID, profileName, profile) + ' (Y/n)') ||
+			!yn(0, 1))
+				return error('操作已被阻止!'), handlerProfileList();
 
-		//判断配置是否合规
-		cfg.isProfileLegal(profileName) || errorExit('配置 ' + profileName + ' 不合规!');
-		//获得配置内容
-		var profile = cfg.getProfileContent(profileName, action, params);
-
-		profile.y === '!' && errorExit('配置 ' + profileName + ' 不允许此操作(-y!选项)!');
-
-		//提示确认操作
-		profile.y !== void 0 || console.log(output('action').getActionConfirm(actionID, profileName, profile) + ' (Y/n)')
-			|| yn(0, 1) || errorExit('操作已被阻止!');
-
-		// 执行操作
-		handlerAction(actionID, cfg, profileName, profile); 
-	}
-	return 0;
+	// 执行操作
+	handlerAction(profileName, profile) === 1 || handlerProfileList();
 }
 
 /**
@@ -115,13 +151,19 @@ function output(type) {
 }
 
 /**
- * 打印一串错误信息并退出
- * @param  {string} description = ''
- * @param  {number} errId = 1
+ * 获得某个类型的归档脚本(require('./archive/... .js'))
+ * @param  {string} type
  */
-function errorExit(description, errId) {
-	console.error( require('colors/safe').red(description || '') );
-	process.exit(errId || 1);
+function archive(type) {
+	return require('./archive/'+type+'.js');
 }
 
-process.exit(main());
+/**
+ * 打印一串错误信息并退出
+ * @param  {string} description = ''
+ * @param  {boolean} exit 是否结束程序
+ */
+function error(description, exit) {
+	console.error( require('colors/safe').red(description || '') );
+	exit && process.exit(typeof exit == 'number' ? exit : 1);
+}

@@ -40,6 +40,9 @@ var thiz = {
 				result[argv[i][1]] = argv[i].slice(2); continue;
 			}
 		}
+
+		//设置配置文件的路径
+		result.configFile = result.f || 'usync.config.json';
 		return result;
 	}
 };

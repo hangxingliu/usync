@@ -27,19 +27,22 @@ describe('配置文件相关测试', function() {
 
 	it('判断配置是否有效', function() {
 		cfg.isProfileLegal('vscode1', 0).should.be.ok;
+		cfg.isProfileLegal('vscode1', 0, ['7z']).should.be.ok;
+		cfg.isProfileLegal('vscode1', 0, ['8z', '9z']).should.be.not.ok;
 		cfg.isProfileLegal('vscode2', 0).should.be.not.ok;
 		cfg.isProfileLegal('vscode3', 0).should.be.not.ok;
 	});
 
 	it('获得配置的详细内容', function() {
 		cfg.getProfileContent('vscode1', 'save', { 'y': '' }).should.has.key(
-			'path', 'exportPath', 'indexFile', 'ignore', 'c', 'd', 'y')
+			'path', 'exportPath', 'indexFile', 'ignore', 'c', 'd', 'y', 'type', 'subtype')
 			.and.satisfy(function(data) {
 				for (var i in data)
 					if (data[i] === void 0)
 						return false;
 				return true;
-			});
+			}).and.has.property('subtype', 'tar');
+		cfg.getProfileContent('vscode2', 'save').should.has.property('type', 'files');
 	});
 
 	it('获得配置的描述信息', function () {

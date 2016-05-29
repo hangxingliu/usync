@@ -16,14 +16,14 @@ var thiz = {
 			return ('询问' + words[c[0]]).green;
 		if (c[0] == 'a')
 			return '全部'.red;
-		return words[c[0]].black;
+		return words[c[0]].gray;
 	},
 
-	'getActionConfirm': function(actionId, profileName, profile) {
+	'getActionConfirm': function (actionId, profileName, profile) {
 		switch (actionId) {
 			case 1:
-				return '确定此计算机加载配置 ' + profileName.underline.gray +
-					',覆盖模式:' + thiz.getCoverDesc(profile.c);
+				return '确定加载配置 ' + profileName.underline.gray +
+					' 的此计算机 ,覆盖模式:' + thiz.getCoverDesc(profile.c);
 			case 2:
 				return '确定此保存配置 ' + profileName.underline.gray +
 					'到U盘,覆盖模式:' + thiz.getCoverDesc(profile.c);

@@ -3,12 +3,12 @@
 	"indexsDir": "Profiles\\indexs",
 	"profiles": {
 		"vscode1": {
-			"type": "files",
+			"type": "7z~tar",
 			"path": ".vscode",
 			"exportPath": "%USERPROFILE%\\.vscode"
 		},
 		"vscode2": {
-			"type": "7z~tar",
+			"type": "files",
 			"path": "vscode",
 			"exportPath": ""
 		}

@@ -6,12 +6,7 @@
 ## Coming soon
 1. Delete redundant files
 2. Ignore files
-3. Archive files
-4. Support i18n
-
-## Version: 0.0.1 (experimental)
-
-**Notice: ** This version only use for experiment , research and study.(It will maybe happen something stupid or unsupport config in this version)
+3. Support i18n
 
 ## License
 [GPL-2.0](LICENSE)
@@ -58,6 +53,11 @@ used to batch transfer files, folders, archives and clean traces between compute
 ```
 - `!`: No for confirm action(Using for action you dont want to execute);
 
+### special config File (-f)
+```
+	-f<configFilePath>
+```
+
 ### Action: load, use, usb2pc
 copy files from usb disk to hraddisk(computer)
 
@@ -73,13 +73,22 @@ clear the traces in computer
 ### Action: cleanusb, clearusb
 clear the files in usb disk
 
+### Action: list
+```
+	list [<searchString>]
+```
+list profiles and profile set.
+
 ## How to config `usync.config.json`.
 ``` javascript
 {
 	"baseDir": ".", //Optional, The usb disk files base folder
 	"indexsDir": "usync.indexs",//Optional, The usb disk files index files store folder
+	"includes": ["sub_config1.json", "..."],//Optional, If you want to write config in many files
 	"profiles": {//Profiles object
 		"PROFILE_NAME": {//Profile name
+			"description": "",//Optional, This profile's description
+			"type":"files",//Optional, default is files, you use other archive type, such as 7z~tar,7z~zip ....
 			"path": "",//Usb disk files path based on baseDir
 			"exportPath": "",//files in computer path(could use system environment path,
 							// such as: "%USERPROFILES%\\xxx")

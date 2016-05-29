@@ -6,12 +6,7 @@
 ## 即将来到的功能
 1. 清除多余的文件
 2. 忽略文件的列表
-3. 归档文件的支持
-4. 脚本-i18n支持
-
-## 版本: 0.0.1 (试验性质)
-
-**注意: ** 只是一个实验研究版.(可能会出Bug和不支持一些特性)
+3. 脚本-i18n支持
 
 ## 开源协议
 [GPL-2.0](LICENSE)
@@ -52,6 +47,11 @@
 	-y
 ```
 
+### 指定配置文件 (-f)
+```
+	-f<configFilePath>
+```
+
 ### Action: load, use, usb2pc
 把文件从U盘复制到电脑
 
@@ -67,13 +67,22 @@
 ### Action: cleanusb, clearusb
 清除U盘中的文件
 
+### Action: list
+```
+	list [<searchString>]
+```
+列举可用配置,可用配置集
+
 ## 配置 `usync.config.json`.
 ``` javascript
 {
 	"baseDir": ".", //可选, U盘内文件的基准目录
 	"indexsDir": "usync.indexs",//可选, U盘内文件的缓存信息存放目录
+	"includes": ["sub_config1.json", "..."],//可选, 如果你需要谢多个配置文件
 	"profiles": {//配置对象
 		"PROFILE_NAME": {//配置名
+			"description": "",//可选, 这个配置的描述
+			"type":"files",//可选, 默认: files, 如果你需要文件归档格式,可以使用例如: 7z~tar,7z~zip ....
 			"path": "",//在U盘基准目录下的相对路径
 			"exportPath": "",//在电脑中的存放路径,可以使用环境变量
 							// 例如: "%USERPROFILES%\\xxx")
